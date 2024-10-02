@@ -126,10 +126,10 @@ _0x32d1f0=>factorSetElementAgain
 _0x34971d=>loadingDialogStyleElement
 "
 if [ "$1" = "--setup" ]; then
-	pkg update
-	pkg upgrade
-	pkg install git
-	pkg install nodejs-lts
+	apt update
+	apt upgrade
+	apt install git
+	apt install nodejs-lts
 	exit 0
 fi
 git=false
@@ -206,11 +206,6 @@ find "$input" -type f -name "*.js" | while IFS= read -r js; do
 	done
 	npx prettier --write "OUTPUT_FILE"
 	exec 1>&3 2>&4
-	if [ "$1" = --sample ]; then
-		if grep -q '_0x' "$OUTPUT_FILE"; then
-			grep '_0x' "$OUTPUT_FILE" >"$SAMPLE_FILE"
-		fi
-	fi
 	cat "$INPUT_FILE" | sed 's/.*/\x1b[31m&\x1b[0m/'
 	sleep 2
 	echo "Deobfuscating $SOURCE_NAME..."
