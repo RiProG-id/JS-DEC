@@ -130,6 +130,7 @@ if [ "$1" = "--setup" ]; then
 	apt upgrade
 	apt install git
 	apt install nodejs-lts
+	apt install pv
 	exit 0
 fi
 git=false
@@ -140,12 +141,15 @@ fi
 if command -v node >/dev/null 2>&1; then
 	node=true
 fi
-if [ "$git" = false ] || [ "$node" = false ]; then
+if [ "$git" = false ] || [ "$node" = false ] || [ "$pv" = false ]; then
 	if [ "$git" = false ]; then
 		echo "Error: git not found. Run script with --setup to install."
 	fi
 	if [ "$node" = false ]; then
 		echo "Error: nodejs not found. Run script with --setup to install."
+	fi
+	if [ "$pv" = false ]; then
+		echo "Error: pv not found. Run script with --setup to install."
 	fi
 	exit 1
 fi
@@ -153,7 +157,7 @@ pattern=false
 ulimit -s unlimited >/dev/null 2>&1
 echo ""
 echo "By RiProG ID"
-echo "JS deobfuscator V1.0"
+echo "JS deobfuscator V1.1"
 echo "For Vmods"
 echo ""
 echo "Example:"
@@ -190,7 +194,7 @@ find "$input" -type f -name "*.js" | while IFS= read -r js; do
 	INPUT_FILE="${SOURCE_FILE}.i.js"
 	OUTPUT_FILE="${SOURCE_FILE}.o.js"
 	SAMPLE_FILE="${SOURCE_FILE}.s.js"
-	echo "Processing $SOURCE_NAME..."
+	echo "Deobfuscating $SOURCE_NAME..."
 	echo "Please wait..."
 	exec 3>&1 4>&2
 	exec >/dev/null 2>&1
@@ -206,14 +210,8 @@ find "$input" -type f -name "*.js" | while IFS= read -r js; do
 	done
 	npx prettier --write "OUTPUT_FILE"
 	exec 1>&3 2>&4
-	cat "$INPUT_FILE" | sed 's/.*/\x1b[31m&\x1b[0m/'
-	sleep 2
-	echo "Deobfuscating $SOURCE_NAME..."
-	echo "Please wait..."
-	sleep 2
-	cat "$OUTPUT_FILE" | sed 's/.*/\x1b[32m&\x1b[0m/'
-	sleep 2
-	echo ""
+	echo "" > "$OUTPUT_FILE"
+	git diff --color -- "$INPUT_FILE" "$OUTPUT_FILE" | stdbuf -oL pv -L 5k | cat
 	echo "Complete"
 	sleep 2
 	mv -f "$OUTPUT_FILE" "$SOURCE_FILE"

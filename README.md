@@ -7,6 +7,7 @@ The following tools are required to run `VmodsDec.sh`:
 
 - **git**: Required to clone the necessary repository.
 - **Node.js**: Required to run the deobfuscation tool.
+- **pv**: Required for controlling the speed of output when processing files.
 
 If these tools are not already installed, you can set up the environment by running the script with the `--setup` flag.
 
