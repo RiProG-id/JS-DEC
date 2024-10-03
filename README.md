@@ -1,5 +1,5 @@
-# VmodsDec.sh
-`VmodsDec.sh` is a JavaScript deobfuscator script specifically tailored for Vmods. It utilizes the `js-deobfuscator` tool in combination with `prettier` to transform obfuscated JavaScript code into a more readable format.
+# JS-DEC
+This script deobfuscates JavaScript code and formats it for better readability. It also uses a dictionary to replace obfuscated identifiers with meaningful names, improving code comprehension.
 
 ## Prerequisites
 
@@ -49,6 +49,6 @@ You will be prompted to enter a file or directory location:
 - [js-deobfuscator](https://github.com/0x1Avram/js-deobfuscator)
 
 **Visit:**
-[Support ME](https://t.me/RiOpSo/2848)
-[Telegram Channel](https://t.me/RiOpSo)
-[Telegram Group](https://t.me/RiOpSoDisc)
+- [Support ME](https://t.me/RiOpSo/2848)
+- [Telegram Channel](https://t.me/RiOpSo)
+- [Telegram Group](https://t.me/RiOpSoDisc)
