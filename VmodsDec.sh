@@ -180,7 +180,7 @@ rm -rf "$HOME/temp"
 ORIG_DIR=$(pwd)
 mkdir "$HOME/temp"
 cd "$HOME/temp" || exit
-git clone https://github.com/0x1Avram/js-deobfuscator.git
+git clone https://github.com/0x1Avram/js-deobfuscator
 cd js-deobfuscator || exit
 npm pkg set dependencies.prettier="$(npm show prettier version)"
 npm install

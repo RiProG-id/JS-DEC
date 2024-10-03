@@ -45,6 +45,9 @@ You will be prompted to enter a file or directory location:
 **Author:**
 [RiProG](https://github.com/RiProG-id)
 
+**Credit:**
+- [js-deobfuscator](https://github.com/0x1Avram/js-deobfuscator)
+
 **Visit:**
 [Support ME](https://t.me/RiOpSo/2848)
 [Telegram Channel](https://t.me/RiOpSo)
