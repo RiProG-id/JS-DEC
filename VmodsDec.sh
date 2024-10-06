@@ -1,5 +1,77 @@
 #!/bin/bash
-dictionary="_0x167de0=>axeron
+if [ "$1" = "--setup" ]; then
+	apt update
+	apt upgrade
+	apt install git
+	apt install nodejs-lts
+	apt install pv
+	exit 0
+fi
+git=false
+node=false
+pv=false
+if command -v git >/dev/null 2>&1; then
+	git=true
+fi
+if command -v node >/dev/null 2>&1; then
+	node=true
+fi
+if command -v node >/dev/null 2>&1; then
+	pv=true
+fi
+if [ "$git" = false ] || [ "$node" = false ] || [ "$pv" = false ]; then
+	if [ "$git" = false ]; then
+		echo "Error: git not found. Run script with --setup to install."
+	fi
+	if [ "$node" = false ]; then
+		echo "Error: nodejs not found. Run script with --setup to install."
+	fi
+	if [ "$pv" = false ]; then
+		echo "Error: pv not found. Run script with --setup to install."
+	fi
+	exit 1
+fi
+pattern=false
+ulimit -s unlimited >/dev/null 2>&1
+echo ""
+echo "By RiProG ID"
+echo "JS deobfuscator V1.2"
+echo "For Vmods"
+echo ""
+echo "Example:"
+echo "Single Input is a file"
+echo "/sdcard/in/example.sh"
+echo "Multi Input is a directory"
+echo "/sdcard/in"
+echo ""
+printf "Enter the location: "
+read -r input
+if [ -z "$(find "$input" -maxdepth 1 -type f)" ]; then
+	echo "Warning: Input not found."
+	exit 1
+fi
+echo "Setting up environment.."
+echo "Please wait..."
+exec 3>&1 4>&2
+exec >/dev/null 2>&1
+rm -rf "$HOME/temp"
+ORIG_DIR=$(pwd)
+mkdir "$HOME/temp"
+cd "$HOME/temp" || exit
+git clone https://github.com/0x1Avram/js-deobfuscator
+cd "$HOME/temp/js-deobfuscator" || exit
+npm pkg set dependencies.prettier="$(npm show prettier version)"
+npm install
+cd "$ORIG_DIR" || exit
+exec 1>&3 2>&4
+echo "Complete"
+sleep 2
+find "$input" -type f -name "*.js" | while IFS= read -r js; do
+	SOURCE_FILE="$js"
+	SOURCE_NAME=$(basename "$SOURCE_FILE")
+	INPUT_FILE="${SOURCE_FILE}.i.js"
+	OUTPUT_FILE="${SOURCE_FILE}.o.js"
+	dictionary="_0x167de0=>axeron
 _0x5bd58a=>stateKey
 _0x1dbd85=>stateValue
 _0x55456a=>createElement
@@ -125,75 +197,6 @@ _0x29e9f4=>factorSetElement
 _0x32d1f0=>factorSetElementAgain
 _0x34971d=>loadingDialogStyleElement
 "
-if [ "$1" = "--setup" ]; then
-	apt update
-	apt upgrade
-	apt install git
-	apt install nodejs-lts
-	apt install pv
-	exit 0
-fi
-git=false
-node=false
-if command -v git >/dev/null 2>&1; then
-	git=true
-fi
-if command -v node >/dev/null 2>&1; then
-	node=true
-fi
-if [ "$git" = false ] || [ "$node" = false ] || [ "$pv" = false ]; then
-	if [ "$git" = false ]; then
-		echo "Error: git not found. Run script with --setup to install."
-	fi
-	if [ "$node" = false ]; then
-		echo "Error: nodejs not found. Run script with --setup to install."
-	fi
-	if [ "$pv" = false ]; then
-		echo "Error: pv not found. Run script with --setup to install."
-	fi
-	exit 1
-fi
-pattern=false
-ulimit -s unlimited >/dev/null 2>&1
-echo ""
-echo "By RiProG ID"
-echo "JS deobfuscator V1.1"
-echo "For Vmods"
-echo ""
-echo "Example:"
-echo "Single Input is a file"
-echo "/sdcard/in/example.sh"
-echo "Multi Input is a directory"
-echo "/sdcard/in"
-echo ""
-printf "Enter the location: "
-read -r input
-if [ -z "$(find "$input" -maxdepth 1 -type f)" ]; then
-	echo "Warning: Input not found."
-	exit 1
-fi
-echo "Setting up environment.."
-echo "Please wait..."
-exec 3>&1 4>&2
-exec >/dev/null 2>&1
-rm -rf "$HOME/temp"
-ORIG_DIR=$(pwd)
-mkdir "$HOME/temp"
-cd "$HOME/temp" || exit
-git clone https://github.com/0x1Avram/js-deobfuscator
-cd js-deobfuscator || exit
-npm pkg set dependencies.prettier="$(npm show prettier version)"
-npm install
-cd "$ORIG_DIR" || exit
-exec 1>&3 2>&4
-echo "Complete"
-sleep 2
-find "$input" -type f -name "*.js" | while IFS= read -r js; do
-	SOURCE_FILE="$js"
-	SOURCE_NAME=$(basename "$SOURCE_FILE")
-	INPUT_FILE="${SOURCE_FILE}.i.js"
-	OUTPUT_FILE="${SOURCE_FILE}.o.js"
-	SAMPLE_FILE="${SOURCE_FILE}.s.js"
 	echo "Deobfuscating $SOURCE_NAME..."
 	echo "Please wait..."
 	exec 3>&1 4>&2
@@ -210,7 +213,7 @@ find "$input" -type f -name "*.js" | while IFS= read -r js; do
 	done
 	npx prettier --write "OUTPUT_FILE"
 	exec 1>&3 2>&4
-	echo "" > "$OUTPUT_FILE"
+	echo "" >"$OUTPUT_FILE"
 	git diff --color -- "$INPUT_FILE" "$OUTPUT_FILE" | stdbuf -oL pv -L 5k | cat
 	echo "Complete"
 	sleep 2
