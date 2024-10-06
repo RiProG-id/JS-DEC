@@ -213,7 +213,7 @@ _0x34971d=>loadingDialogStyleElement
 	done
 	npx prettier --write "OUTPUT_FILE"
 	exec 1>&3 2>&4
-	echo "" >"$OUTPUT_FILE"
+	echo "" >>"$OUTPUT_FILE"
 	git diff --color -- "$INPUT_FILE" "$OUTPUT_FILE" | stdbuf -oL pv -L 5k | cat
 	echo "Complete"
 	sleep 2
