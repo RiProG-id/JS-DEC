@@ -11,6 +11,8 @@ The following tools are required to run `VmodsDec.sh`:
 
 If these tools are not already installed, you can set up the environment by running the script with the `--setup` flag.
 
+Berikut adalah keseluruhan bagian Installation yang telah diperbarui untuk mencakup informasi tentang setup lingkungan deobfuscation JavaScript:
+
 ## Installation
 
 Run the following command to set up your environment:
@@ -21,25 +23,24 @@ bash VmodsDec.sh --setup
 
 This command will:
 
-- Update and upgrade your system's package list.
-- Install `git` and `Node.js`.
+Update and upgrade your system's package list.
+
+Install git, Node.js, and pv.
+
+Set up the JavaScript deobfuscation environment by cloning the necessary repository.
 
 ## Usage
 
-`VmodsDec.sh` can be used for both single-file input and directory input, processing `.js` files for deobfuscation.
-
-### Running the Script
-
-To execute the script:
-
-```sh
-bash /VmodsDec.sh
-```
-
-You will be prompted to enter a file or directory location:
+After the installation is complete, run the script without any arguments to start deobfuscating JavaScript files. You will be given two options:
 
 - For a **single JavaScript file**, enter the full file path.
 - For **multiple files in a directory**, enter the directory path containing the `.js` files.
+
+Examples:
+- For a single file: `/home/user/scripts/example.js`
+- For a directory: `/home/user/scripts`
+
+Follow the next instructions provided by the script to complete the deobfuscation process.
 
 ### More Information
 **Author:**
