@@ -5,7 +5,7 @@ TEST_FILE="$PROGRAM_DIR/TEST_FILE"
 touch "$TEST_FILE"
 chmod +x "$TEST_FILE" >/dev/null 2>&1
 if [ ! -x "$TEST_FILE" ]; then
-	echo "No execute permission. Please change directory."
+	echo "No execute permission. Please clone JS-DEC to other directory."
 	rm -f "$TEST_FILE"
 	exit 0
 else
@@ -79,7 +79,7 @@ sleep 2
 echo ""
 printf "Enter the location: "
 read -r input
-js_files=$(find "$input" -maxdepth 1 -type f -name "*.js" 2>/dev/null)
+js_files=$(find "$input" -type f -name "*.js" 2>/dev/null)
 if [ -z "$js_files" ]; then
 	echo "Warning: No .js files found."
 	sleep 2
