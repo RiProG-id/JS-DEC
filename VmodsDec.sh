@@ -92,13 +92,16 @@ for js in $js_files; do
 	echo "Found: $SOURCE_NAME"
 done
 sleep 2
+echo ""
 while true; do
 	printf "Use Prettier? (0 for No, 1 for Yes): "
 	read -r use_prettier
 	if [ "$use_prettier" -eq 0 ]; then
+		echo "You chose not to use Prettier."
 		use_prettier=false
 		break
 	elif [ "$use_prettier" -eq 1 ]; then
+		echo "You chose use Prettier."
 		use_prettier=true
 		break
 	else
@@ -106,13 +109,16 @@ while true; do
 		sleep 2
 	fi
 done
+echo ""
 while true; do
-	printf "Compare original and deobfuscated files? (0 for No, 1 for Yes): "
+	printf "Compare files? (0 for No, 1 for Yes): "
 	read -r compare_files
 	if [ "$compare_files" -eq 0 ]; then
+		echo "You chose not to use Compare files."
 		compare_files=false
 		break
 	elif [ "$compare_files" -eq 1 ]; then
+		echo "You chose to use Compare files."
 		compare_files=true
 		break
 	else
@@ -120,29 +126,28 @@ while true; do
 		sleep 2
 	fi
 done
+echo ""
 for js in $js_files; do
 	SOURCE_FILE="$js"
 	SOURCE_NAME=$(basename "$SOURCE_FILE")
-	INPUT_FILE="${SOURCE_FILE}.i.js"
+	INPUT_FILE="$SOURCE_FILE.i.js"
 	INPUT_NAME=$(basename "$INPUT_FILE")
-	OUTPUT_FILE="${SOURCE_FILE}.o.js"
-	OUTPUT_NAME=$(basename "$OUTPUT_NAME")
-	echo "Deobfuscating $SOURCE_NAME..."
-	sleep 2
+	OUTPUT_FILE="$SOURCE_FILE.o.js"
+	OUTPUT_NAME=$(basename "$OUTPUT_FILE")
 	echo "Copying $SOURCE_NAME to $INPUT_NAME"
 	sleep 2
 	cp -f "$SOURCE_FILE" "$INPUT_FILE"
 	ORIG_DIR=$(pwd)
-	cd "$PROGRAM_DIR/js-deobfuscator/" || exit
+	cd "$PROGRAM_DIR/js-deobfuscator" || exit
 	if [ "$use_prettier" = true ]; then
 		echo "Formatting $INPUT_NAME with Prettier..."
 		sleep 2
-		npx prettier --write "$INPUT_NAME"
+		npx prettier --write "$INPUT_FILE"
 	fi
 	echo "Running deobfuscation on $INPUT_NAME..."
 	sleep 2
 	node "index.js" -i "$INPUT_FILE" -o "$OUTPUT_FILE"
-	echo "Deobfuscation complete. Output: $OUTPUT_NAME."
+	echo "Deobfuscation complete. Output: $OUTPUT_NAME"
 	sleep 2
 	if [ "$use_prettier" = true ]; then
 		echo "Formatting output $OUTPUT_NAME with Prettier..."
@@ -158,14 +163,13 @@ for js in $js_files; do
 	else
 		echo "Skipping comparison."
 	fi
-	echo "Deobfuscation for $SOURCE_NAME complete."
-	sleep 2
-	echo "Moving $OUTPUT_FILE to $SOURCE_NAME"
+	echo "Moving $OUTPUT_NAME to $SOURCE_NAME"
 	sleep 2
 	mv -f "$OUTPUT_FILE" "$SOURCE_FILE"
 	echo "Removing intermediate file: $INPUT_NAME"
 	sleep 2
 	rm -f "$INPUT_FILE"
+	echo ""
 done
 echo "All deobfuscation tasks completed."
 sleep 2
